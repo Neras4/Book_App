@@ -7,9 +7,6 @@ public class BadRequestException extends RuntimeException {
     }
 
     public BadRequestException() {
-    }
-
-    public String getMessage() {
-        return "Bad Request";
+        super("Bad Request");
     }
 }

@@ -6,10 +6,7 @@ public class ConflictException extends RuntimeException {
     }
 
     public ConflictException() {
-    }
-
-    public String getMessage() {
-        return "Conflict";
+        super("Conflict");
     }
 }
 

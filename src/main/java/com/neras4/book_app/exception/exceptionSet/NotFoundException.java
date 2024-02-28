@@ -8,14 +8,11 @@ public class NotFoundException extends RuntimeException {
     }
 
     public NotFoundException(int bookId) {
+        super("Not Found");
         this.bookId = bookId;
     }
 
     public int getBookId() {
         return bookId;
-    }
-
-    public String getMessage() {
-        return "Not Found";
     }
 }
