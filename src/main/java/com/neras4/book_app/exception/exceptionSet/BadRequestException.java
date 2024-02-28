@@ -1,4 +1,4 @@
-package com.neras4.book_app.exception;
+package com.neras4.book_app.exception.exceptionSet;
 
 public class BadRequestException extends RuntimeException {
 
@@ -7,6 +7,9 @@ public class BadRequestException extends RuntimeException {
     }
 
     public BadRequestException() {
+    }
 
+    public String getMessage() {
+        return "Bad Request";
     }
 }

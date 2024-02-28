@@ -1,9 +1,9 @@
 package com.neras4.book_app.service;
 
-import com.neras4.book_app.exception.BadRequestException;
-import com.neras4.book_app.exception.ConflictException;
-import com.neras4.book_app.exception.NoContentException;
-import com.neras4.book_app.exception.NotFoundException;
+import com.neras4.book_app.exception.exceptionSet.BadRequestException;
+import com.neras4.book_app.exception.exceptionSet.ConflictException;
+import com.neras4.book_app.exception.exceptionSet.NoContentException;
+import com.neras4.book_app.exception.exceptionSet.NotFoundException;
 import com.neras4.book_app.model.Book;
 import com.neras4.book_app.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book getBookById(int id) throws NotFoundException {
         if (bookRepository.findById(id).isEmpty()) {
-            throw new NotFoundException();
+            throw new NotFoundException(id);
         }
 
         return bookRepository.findById(id).get();
@@ -42,9 +42,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book addBook(Book book) {
-        if (book == null || book.getTitle() == null || book.getAuthor() == null) {
-            throw new BadRequestException();
-        }
+        validateBook(book);
 
         if (bookRepository.existsById(book.getId())) {
             throw new ConflictException();
@@ -55,26 +53,31 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book updateBook(int id, Book book) {
-        if (book == null || book.getTitle() == null || book.getAuthor() == null) {
-            throw new BadRequestException();
-        }
-
-        Optional<Book> optionalBook = bookRepository.findById(id);
-        Book bookToUpdate = optionalBook.orElseThrow(NotFoundException::new);
+        validateBook(book);
+        Book bookToUpdate = findBookByIdOrThrow(id);
 
         bookToUpdate.setTitle(book.getTitle());
         bookToUpdate.setAuthor(book.getAuthor());
-        bookRepository.save(bookToUpdate);
 
-        return bookToUpdate;
+        return bookRepository.save(bookToUpdate);
     }
 
     @Override
     public Book deleteBook(int id) {
-        Optional<Book> optionalBook = bookRepository.findById(id);
-        Book removeBook = optionalBook.orElseThrow(NotFoundException::new);
+        Book removeBook = findBookByIdOrThrow(id);
 
         bookRepository.delete(removeBook);
         return removeBook;
+    }
+
+    private void validateBook(Book book) {
+        if (book == null || book.getTitle() == null || book.getAuthor() == null) {
+            throw new BadRequestException();
+        }
+    }
+
+    private Book findBookByIdOrThrow(int id) {
+        Optional<Book> optionalBook = bookRepository.findById(id);
+        return optionalBook.orElseThrow(() -> new NotFoundException(id));
     }
 }

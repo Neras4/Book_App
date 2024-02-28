@@ -1,9 +1,9 @@
 package com.neras4.book_app.service;
 
-import com.neras4.book_app.exception.BadRequestException;
-import com.neras4.book_app.exception.ConflictException;
-import com.neras4.book_app.exception.NoContentException;
-import com.neras4.book_app.exception.NotFoundException;
+import com.neras4.book_app.exception.exceptionSet.BadRequestException;
+import com.neras4.book_app.exception.exceptionSet.ConflictException;
+import com.neras4.book_app.exception.exceptionSet.NoContentException;
+import com.neras4.book_app.exception.exceptionSet.NotFoundException;
 import com.neras4.book_app.model.Book;
 
 import java.util.List;
