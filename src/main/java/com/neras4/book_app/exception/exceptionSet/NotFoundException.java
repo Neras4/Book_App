@@ -1,11 +1,7 @@
 package com.neras4.book_app.exception.exceptionSet;
 
 public class NotFoundException extends RuntimeException {
-    private int bookId;
-
-    public NotFoundException(String message) {
-        super(message);
-    }
+    private final int bookId;
 
     public NotFoundException(int bookId) {
         super("Not Found");
